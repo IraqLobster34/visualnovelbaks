@@ -3447,7 +3447,7 @@ label start:
     narrator "Она закрывает папку." id line_0638
     $ chapter = "ВХОДЯЩИЙ ВЫЗОВ"
     $ active_speaker = ""
-    narrator "Спустя несколько секунд из внутренней связи раздаётся голос секретаря." id line_0639
+    narrator "Спустя несколько секунд по внутренней связи раздаётся мужской голос секретаря." id line_0639
     $ active_speaker = "secretary"
     $ bucks_mood = "knowing"
     $ brando_mood = "tired"
