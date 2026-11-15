@@ -1,30 +1,17 @@
 УВС-19F: Причина отказа
 
-Сценарий: полный текст, предоставленный автором проекта 15 ноября 2026.
-Референс внешности персонажей: авторское изображение.
+Версия 0.2.0
 
-Иллюстрации: созданы встроенным imagegen по референсу; выполнены очистка краёв
-и исправление кисти Ларри Бакса на третьем спрайте.
+Сценарий
 
-Озвучка: синтез Microsoft Edge через edge-tts.
-Бакс: RemyMultilingualNeural. Брандо: SvetlanaNeural.
-Морэ: BrianMultilingualNeural. Секретарь: EmmaMultilingualNeural.
-Голоса являются синтетическими и не имитируют конкретных актёров.
+- чета поменялось наверное
+- или нет
 
-Музыка (CC0 1.0):
-"A Detuned Memory" — Tarush Singhal
-https://opengameart.org/content/a-detuned-memory
-"Forbidden Space" — SkyleTheFrench (loop version)
-https://opengameart.org/content/forbidden-space
+Изображения
 
-Звуковые эффекты (CC0 1.0):
-Door Open SFX — Oiboo: https://opengameart.org/content/door-open-sfx
-Door open, door close — Iwan Gabovitch (qubodup):
-https://opengameart.org/content/door-open-door-close
-Paper Rustling — Scorcher24: https://opengameart.org/content/scorchers-foley-sounds
-Thwack Sounds — Jordan Irwin (AntumDeluge): https://opengameart.org/content/thwack-sounds
-Menu Select — Musheran: https://opengameart.org/content/menu-select
-Лицензия CC0: https://creativecommons.org/publicdomain/zero/1.0/
+- добавлены порно версии персонажей за 9.99$
+- добавлены фокусы
+
 
 Движок Ren'Py 8.5.3, copyright Tom Rothamel и соавторы.
 Лицензии движка и библиотек: https://www.renpy.org/doc/html/license.html

@@ -1,5 +1,7 @@
 define config.name = "УВС-19F: Причина отказа"
-define config.version = "0.1.0"
+define config.version = "0.2.0"
+
+define gui.about = renpy.file("release-notes.txt").read().decode("utf-8").strip()
 define config.window_title = "УВС-19F · Причина отказа"
 define config.window_icon = "images/window_icon.png"
 define config.save_directory = "Uvs19F-PrichinaOtkaza"
@@ -18,7 +20,7 @@ define config.after_load_transition = Dissolve(0.3)
 define config.window = "auto"
 define config.window_show_transition = Dissolve(0.15)
 define config.window_hide_transition = Dissolve(0.15)
-define config.main_menu_music = "audio/memory.mp3"
+define config.main_menu_music = "audio/soundtrack.mp3"
 default preferences.fullscreen = False
 default preferences.music_volume = 0.25
 default preferences.sound_volume = 0.6
@@ -41,3 +43,11 @@ init python:
     build.classify("README.txt", "all")
     build.classify("CREDITS.txt", "all")
     build.classify("**", None)
+
+# Saves made before the soundtrack change can contain the old audio queue.
+label after_load:
+    stop sound
+    stop ambience
+    if renpy.get_screen("cast_stage"):
+        play music "audio/soundtrack.mp3" loop if_changed fadein 1.0 volume 0.45
+    return

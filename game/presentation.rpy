@@ -12,35 +12,54 @@ default visible_bucks = True
 default visible_more = False
 default chapter = "КАДРОВОЕ РЕШЕНИЕ"
 
-image bg office = Transform("images/office.png", size=(1920, 1080))
+image bg office = Transform("images/office-scp-v2.png", size=(1920, 1080))
+
+image bucks mog = Transform("images/bucks-mog.png", ysize=870, fit="contain")
+image brando mog = Transform("images/brando-mog.png", ysize=870, fit="contain")
 
 # Crop the sheet at runtime, preserving the original generated alpha and pixels.
 init python:
     for person, expressions in {
         "bucks": ("neutral", "serious", "knowing"),
         "brando": ("neutral", "angry", "tired"),
-        "more": ("neutral", "firm", "uneasy"),
+        "more": ("neutral", "firm", "uneasy", "mog"),
     }.items():
-        sheet = "images/" + person + ".png"
+        sheet = "images/more-v2.png" if person == "more" else "images/" + person + ".png"
         width, height = renpy.image_size(sheet)
-        boundaries = [round(width * i / 3) for i in range(4)]
+        columns = len(expressions)
+        boundaries = [round(width * i / columns) for i in range(columns + 1)]
         for index, expression in enumerate(expressions):
             crop = Crop((boundaries[index], 0, boundaries[index+1]-boundaries[index], height), sheet)
             renpy.image(person + " " + expression, Transform(crop, ysize=870, fit="contain"))
 
+transform mog_pose_pop:
+    subpixel True
+    zoom 0.99
+    easeout 0.14 zoom 1.035
+    ease 0.20 zoom 1.0
+
 screen cast_stage():
     zorder -10
-    if visible_bucks:
-        add "bucks [bucks_mood]":
-            xpos 0.17 xanchor 0.5 ypos 935 yanchor 1.0
-            matrixcolor BrightnessMatrix(0.0 if active_speaker == "bucks" else -0.14)
-    add "brando [brando_mood]":
-        xpos 0.50 xanchor 0.5 ypos 935 yanchor 1.0
-        matrixcolor BrightnessMatrix(0.0 if active_speaker == "brando" else -0.14)
-    if visible_more:
-        add "more [more_mood]":
-            xpos 0.83 xanchor 0.5 ypos 935 yanchor 1.0
-            matrixcolor BrightnessMatrix(0.0 if active_speaker == "more" else -0.14)
+    if mog_ready:
+        timer mog_delay action Function(mog_trigger_pending) repeat True
+    if mog_speaker:
+        # The video is drawn first, behind both the cast and the say screen.
+        add "mog edit" xysize (1920, 1080)
+        if not mog_first_cycle_done:
+            timer mog_duration action Function(mog_mark_cycle)
+    for person, position, mood, visible in (
+        ("bucks", 0.17, bucks_mood, visible_bucks),
+        ("brando", 0.50, brando_mood, True),
+        ("more", 0.83, more_mood, visible_more),
+    ):
+        if visible:
+            if mog_speaker == person:
+                add (person + " mog") at mog_pose_pop:
+                    xpos position xanchor 0.5 ypos 935 yanchor 1.0
+            else:
+                add (person + " " + mood):
+                    xpos position xanchor 0.5 ypos 935 yanchor 1.0
+                    matrixcolor BrightnessMatrix(0.0 if active_speaker == person else -0.14)
 
 screen scene_header():
     zorder 10
@@ -86,6 +105,7 @@ screen quick_menu():
 
 screen main_menu():
     tag menu
+    on "show" action Function(mog_finish)
     add "bg office"
     add Solid("#090b10bb")
     add "more neutral" xpos 0.87 xanchor 0.5 ypos 1100 yanchor 1.0 alpha 0.5
@@ -132,9 +152,8 @@ screen about():
             spacing 22
             text "УВС-19F: Причина отказа" size 38 bold True
             text "Версия [config.version]" size 23
-            text "Линейная постановка полного диалога о назначении начальника ОВС. Все реплики и ремарки перенесены из предоставленного автором текста."
-            text "Персонажи: Ларри Бакс, Молли Брандо, Александр Морэ. Голос секретаря звучит по внутренней связи."
-            text "Голоса синтезированы ИИ (Microsoft). Иллюстрации созданы ИИ по авторскому референсу."
+            text gui.about
+            text "Голоса Бакса, Брандо и Морэ синтезированы ИИ. Восемь записей секретаря предоставлены автором проекта. Иллюстрации созданы ИИ по авторскому референсу."
             text "Управление: щелчок, пробел или Enter — дальше; колесо вверх — назад; Esc — меню; H — скрыть текст; F — полный экран."
             text "Режим «Авто» дожидается окончания озвучки. Громкость речи, музыки и эффектов настраивается раздельно."
             text "История содержит ненормативную лексику."
@@ -172,7 +191,7 @@ init 5 python:
     gui.selected_color = "#eee5d9"
     gui.text_color = "#eee5d9"
     gui.interface_text_color = "#ded6cc"
-    gui.main_menu_background = "images/office.png"
+    gui.main_menu_background = "images/office-scp-v2.png"
     gui.game_menu_background = Solid("#121217f9")
 
 style navigation_button_text:
