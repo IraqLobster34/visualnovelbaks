@@ -1,8 +1,8 @@
-define config.name = "УВС-19F: Причина отказа"
-define config.version = "0.2.0"
+define config.name = "История Ларри Бакса"
+define config.version = "0.3"
 
 define gui.about = renpy.file("release-notes.txt").read().decode("utf-8").strip()
-define config.window_title = "УВС-19F · Причина отказа"
+define config.window_title = config.name
 define config.window_icon = "images/window_icon.png"
 define config.save_directory = "Uvs19F-PrichinaOtkaza"
 define config.has_sound = True
@@ -26,12 +26,13 @@ default preferences.music_volume = 0.25
 default preferences.sound_volume = 0.6
 default preferences.voice_volume = 1.0
 default persistent.finished = False
+default story_music = "audio/soundtrack.mp3"
 
 init python:
     renpy.music.register_channel("ambience", "sfx", loop=True)
-    build.name = "Uvs19F"
-    build.executable_name = "Uvs19F"
-    build.directory_name = "Uvs19F-" + config.version
+    build.name = "LarryBucksStory"
+    build.executable_name = "LarryBucksStory"
+    build.directory_name = "LarryBucksStory-" + config.version
     build.include_update = False
     build.classify("game/cache/**", None)
     build.classify("**.bak", None)
@@ -48,6 +49,6 @@ init python:
 label after_load:
     stop sound
     stop ambience
-    if renpy.get_screen("cast_stage"):
-        play music "audio/soundtrack.mp3" loop if_changed fadein 1.0 volume 0.45
+    if renpy.get_screen("cast_stage") or renpy.get_screen("scene_header"):
+        play music story_music loop if_changed fadein 1.0 volume 0.45
     return

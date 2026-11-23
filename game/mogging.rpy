@@ -13,6 +13,7 @@ init -20 python:
 
     with renpy.file("mog-quips.json") as quip_file:
         MOG_QUIPS = frozenset((quip["speaker"], quip["text"]) for quip in json.load(quip_file))
+    MOG_SPEAKERS = frozenset(speaker for speaker, text in MOG_QUIPS)
 
     # The author's five-second "mentalist moment.mp4", converted to WebM.
     # A small decoding margin ensures the first cycle is complete before Auto.
@@ -29,7 +30,7 @@ init -20 python:
         store.mog_first_cycle_done = False
 
     def mog_start(speaker, duration=None):
-        if speaker not in ("bucks", "brando", "more"):
+        if speaker not in MOG_SPEAKERS:
             return
         mog_finish()
         store.mog_music_was_paused = renpy.music.get_pause(channel="music")
